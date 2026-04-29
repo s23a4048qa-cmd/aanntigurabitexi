@@ -135,7 +135,9 @@ const carsData = [
     { name: "フェラーリ 488", side: "left", isCommon: false, isJapan: false },
     { name: "ランボルギーニ ウラカン", side: "right", isCommon: false, isJapan: false },
     { name: "テスラ モデル3", side: "left", isCommon: false, isJapan: false }, // 充電口左後ろ
-    { name: "フィアット 500", side: "right", isCommon: false, isJapan: false }
+    { name: "フィアット 500", side: "right", isCommon: false, isJapan: false },
+    { name: "トヨタ MIRAI", side: "left", isCommon: false, isJapan: true }, // 水素充填口は左
+    { name: "ダイハツ ハイゼット", side: "right", isCommon: true, isJapan: true } // ユーザー指摘: ハイゼットは右
 ];
 
 // 例外的にWikipedia APIで画像が取得しづらい車種の画像URLを直接指定する
