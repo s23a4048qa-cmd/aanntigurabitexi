@@ -3,74 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ガソリンスタンド 案内ゲーム</title>
+    <title>覚醒の脱却 - e東京喰種パチンコ依存症克服シミュレーター</title>
     <link rel="stylesheet" href="index.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+JP:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="app">
-        <!-- Start Screen -->
-        <div id="start-screen" class="screen active">
-            <h1>⛽ ガソリンスタンド案内ゲーム</h1>
-            <p>入店してくる車の給油口を当てて、正しいレーンに案内しよう！</p>
-            <p class="rules">
-                給油口が左なら「左へ案内」<br>
-                給油口が右なら「右へ案内」
-            </p>
-            <div class="difficulty-buttons">
-                <button id="start-btn" class="difficulty-btn easy">業務開始（スタート）</button>
-            </div>
-        </div>
+    <div class="decorations">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
 
-        <!-- Play Screen -->
-        <div id="play-screen" class="screen">
-            <div class="header-info">
-                <div class="score-board">売上: <span id="score">0</span>円</div>
-                <div class="time-board">残り時間: <span id="time">30</span>秒</div>
+    <div class="app-container">
+        <!-- サイドバー／ヘッダー -->
+        <header class="app-header">
+            <div class="logo-area">
+                <i class="fa-solid fa-brain-circuit title-icon"></i>
+                <div class="logo-text">
+                    <h1>覚醒の脱却</h1>
+                    <span>e東京喰種 依存症克服シミュレータ</span>
+                </div>
             </div>
+            <p class="header-slogan">「君は、まだこの地獄を喰らい続けるのか？」</p>
             
-            <div class="game-area">
-                <div id="car-info">
-                    <h2 id="car-name">車名</h2>
+            <nav class="nav-tabs">
+                <button class="tab-btn active" data-tab="realtime">
+                    <i class="fa-solid fa-gamepad"></i> リアル実践
+                </button>
+                <button class="tab-btn" data-tab="statistics">
+                    <i class="fa-solid fa-chart-line"></i> 長期統計の現実
+                </button>
+                <button class="tab-btn" data-tab="psychology">
+                    <i class="fa-solid fa-skull"></i> ドーパミンの罠と数学
+                </button>
+                <button class="tab-btn" data-tab="investment">
+                    <i class="fa-solid fa-sack-dollar"></i> もしも積立投資なら
+                </button>
+            </nav>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="app-main">
+            <!-- 1. リアル実践シミュレーター -->
+            <section id="realtime" class="tab-content active">
+                <div class="grid-layout">
+                    <div class="card pachi-machine glass">
+                        <div class="machine-header">
+                            <span class="badge red-neon">e 東京喰種スペック</span>
+                            <h2>実機シミュレーション</h2>
+                        </div>
+                        
+                        <!-- 液晶画面風エリア -->
+                        <div class="screen-area">
+                            <div class="screen-overlay"></div>
+                            
+                            <div id="pachi-display" class="pachi-display">
+                                <div class="display-default">
+                                    <div class="normal-eye">
+                                        <i class="fa-solid fa-eye eye-pulse"></i>
+                                    </div>
+                                    <div class="spin-numbers" id="spin-numbers">
+                                        <span class="num" id="num-left">7</span>
+                                        <span class="num" id="num-center">7</span>
+                                        <span class="num" id="num-right">7</span>
+                                    </div>
+                                    <div class="screen-message" id="screen-msg">CHANCE...</div>
+                                </div>
+                            </div>
+                            
+                            <div class="screen-stats">
+                                <div class="stat-box">
+                                    <span class="label">現在の回転数</span>
+                                    <span class="val font-orbit" id="current-rotation">0</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="label">総回転数</span>
+                                    <span class="val font-orbit" id="total-rotation">0</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="label">大当り回数</span>
+                                    <span class="val font-orbit text-red" id="jackpot-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 操作パネル -->
+                        <div class="control-panel">
+                            <div class="controls-row">
+                                <button class="btn-pachi primary" id="btn-spin">
+                                    <i class="fa-solid fa-circle-play"></i> 1回転まわす (250円)
+                                </button>
+                                <button class="btn-pachi secondary" id="btn-spin-10">
+                                    <i class="fa-solid fa-forward"></i> 10回転 (2500円)
+                                </button>
+                            </div>
+                            <div class="controls-row">
+                                <button class="btn-pachi danger" id="btn-spin-jackpot">
+                                    <i class="fa-solid fa-bolt-lightning"></i> 当たるまで回す (超高速)
+                                </button>
+                                <button class="btn-pachi warning" id="btn-spin-rush">
+                                    <i class="fa-solid fa-fire-flame-curved"></i> RUSH突入まで回す
+                                </button>
+                            </div>
+                            <button class="btn-pachi text-only" id="btn-reset-realtime">
+                                <i class="fa-solid fa-arrow-rotate-left"></i> データをリセットする
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- リアルタイム収支ボード -->
+                    <div class="card pachi-stats glass">
+                        <h2>冷酷な実践収支ボード</h2>
+                        <p class="card-desc">1K=16.5回転（4円パチンコ・等価）でリアルに算出された、あなたの現在の損失状況です。</p>
+                        
+                        <div class="revenue-board">
+                            <div class="rev-row bg-dark-red">
+                                <div class="rev-item">
+                                    <span class="label"><i class="fa-solid fa-wallet"></i> 総投資額</span>
+                                    <span class="val text-large" id="total-investment">0</span><span class="unit">円</span>
+                                </div>
+                            </div>
+                            
+                            <div class="rev-row-split">
+                                <div class="rev-item glass-mini">
+                                    <span class="label"><i class="fa-solid fa-coins"></i> 総獲得出玉</span>
+                                    <span class="val text-medium text-green" id="total-out-balls">0</span><span class="unit">玉</span>
+                                </div>
+                                <div class="rev-item glass-mini">
+                                    <span class="label"><i class="fa-solid fa-hand-holding-dollar"></i> 総回収額</span>
+                                    <span class="val text-medium text-green" id="total-return-money">0</span><span class="unit">円</span>
+                                </div>
+                            </div>
+
+                            <div class="rev-row border-red" id="balance-container">
+                                <div class="rev-item">
+                                    <span class="label"><i class="fa-solid fa-scale-unbalanced"></i> トータル収支</span>
+                                    <span class="val text-huge text-red" id="total-balance">0</span><span class="unit">円</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 履歴ログ -->
+                        <div class="jackpot-history">
+                            <h3><i class="fa-solid fa-history"></i> 大当たり履歴・結果</h3>
+                            <div class="history-list" id="history-list">
+                                <div class="empty-history">まだ大当りはありません。</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="car-image-container">
-                    <img id="car-image" src="" alt="車の画像" />
-                    <div id="feedback-overlay" class="feedback-overlay"></div>
+            </section>
+
+            <!-- 2. 長期統計の現実 -->
+            <section id="statistics" class="tab-content">
+                <div class="card glass">
+                    <div class="card-header-actions">
+                        <div>
+                            <h2>「大数の法則」超高速シミュレーション</h2>
+                            <p class="card-desc">何十日、何百日も打ち続けた際の、数学的に避けられない「真実の負け額」を瞬時に検証します。</p>
+                        </div>
+                        <div class="select-simulation">
+                            <label for="select-days">シミュレート期間: </label>
+                            <select id="select-days" class="select-dark">
+                                <option value="30">1ヶ月毎日打つ (約3,000回転)</option>
+                                <option value="180">半年間毎日打つ (約18,000回転)</option>
+                                <option value="365" selected>1年間毎日打つ (約36,500回転)</option>
+                                <option value="1825">5年間毎日打つ (約182,500回転)</option>
+                            </select>
+                            <button class="btn-pachi danger" id="btn-run-batch">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> 運命を実行する
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="batch-results-grid">
+                        <!-- 統計概要 -->
+                        <div class="batch-metrics glass-mini">
+                            <h3><i class="fa-solid fa-calculator"></i> シミュレーション集計結果</h3>
+                            <div class="metric-row">
+                                <span class="label">総試行回転数</span>
+                                <span class="val font-orbit" id="batch-total-rot">0</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="label">総初当たり数</span>
+                                <span class="val font-orbit" id="batch-total-jp">0</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="label">RUSH突入回数</span>
+                                <span class="val font-orbit text-red" id="batch-total-rush">0</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="label">RUSH突入率 (実質)</span>
+                                <span class="val font-orbit" id="batch-rush-rate">0%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="label">最高連チャン数</span>
+                                <span class="val font-orbit text-green" id="batch-max-chain">0</span>
+                            </div>
+                            <div class="metric-row bg-dark-red">
+                                <span class="label font-bold text-red">トータル収支平均</span>
+                                <span class="val font-orbit text-large text-red" id="batch-avg-balance">0円</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="label">勝率 (プラス収支で終えた割合)</span>
+                                <span class="val font-orbit text-red font-bold" id="batch-win-rate">0%</span>
+                            </div>
+                        </div>
+
+                        <!-- 収支グラフ -->
+                        <div class="batch-chart-container glass-mini">
+                            <h3><i class="fa-solid fa-chart-line-down"></i> 資産減少シミュレーショングラフ</h3>
+                            <div class="canvas-wrapper">
+                                <canvas id="chart-canvas"></canvas>
+                            </div>
+                            <div class="chart-legend">
+                                <span class="legend-item"><span class="color-box red"></span> あなたのトータル収支</span>
+                                <span class="legend-item"><span class="color-box gray"></span> パチンコ店の確実な取り分</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- パチンコの経済学解説 -->
+                    <div class="math-explanation glass-mini">
+                        <h3><i class="fa-solid fa-shield-halved text-red"></i> 確率の収束という絶対の監獄</h3>
+                        <p>
+                            このシミュレータは、スマパチ『e 東京喰種』の正確な確率設計（合算 1/199.95、図柄揃い時のST突入率等）に基づき、完全に公平な乱数シミュレーションを行っています。
+                            注目すべきは**「勝率」**です。1年間毎日打った場合、勝率はほぼ**数％以下**に収束し、トータル収支はほぼ確実に数百万円レベルのマイナスになります。
+                            パチンコには「釘の調整（基本ボーダー以下）」や「換金時のギャップ手数料」が存在するため、現実のパチンコ店ではさらに冷酷な結果になります。
+                            「次は勝てる」「昨日は勝った」というのは、脳の記憶のバグに過ぎません。長く打てば打つほど、あなたは確実に破滅に近づきます。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. ドーパミンの罠と数学 -->
+            <section id="psychology" class="tab-content">
+                <div class="grid-layout">
+                    <!-- ドーパミンの罠解説 -->
+                    <div class="card glass">
+                        <h2>パチンコが脳を破壊する「喰種の赫子」の如き仕組み</h2>
+                        <div class="accordion-container" id="accordion-advice">
+                            <!-- ここにJSから心理解説カードを挿入 -->
+                        </div>
+                    </div>
+
+                    <!-- 依存症セルフチェック -->
+                    <div class="card glass">
+                        <h2>パチンコ依存症 セルフ診断</h2>
+                        <p class="card-desc">あなたの精神はすでにギャンブルという「赫子」に寄生されていませんか？ 以下の質問に素直に答えてください。</p>
+                        
+                        <form id="check-form" class="check-form">
+                            <div id="questions-container" class="questions-container">
+                                <!-- JSで質問を挿入 -->
+                            </div>
+                            <button type="button" class="btn-pachi danger w-full mt-4" id="btn-calc-score">
+                                <i class="fa-solid fa-notes-medical"></i> 診断を実行する
+                            </button>
+                        </form>
+
+                        <!-- 診断結果表示 -->
+                        <div id="check-result" class="check-result-box hidden">
+                            <h3>診断結果</h3>
+                            <div class="score-display">
+                                <span class="score-label">依存症危険度：</span>
+                                <span class="score-value" id="check-score">0</span>
+                                <span class="score-max">/ 13点</span>
+                            </div>
+                            <div class="result-evaluation" id="check-eval">
+                                <!-- 診断結果のコメント -->
+                            </div>
+                            <p class="result-advice" id="check-advice">
+                                <!-- 具体的なアドバイス -->
+                            </p>
+                            <button type="button" class="btn-pachi text-only mt-2" id="btn-reset-check">
+                                <i class="fa-solid fa-redo"></i> もう一度やり直す
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. もしも積立投資なら -->
+            <section id="investment" class="tab-content">
+                <div class="card glass">
+                    <h2>「奪い去られる未来」から「創り出す未来」へ</h2>
+                    <p class="card-desc">
+                        パチンコでドブに捨てるそのお金を、もし世界的な積立投資に回していたら？ 
+                        数学の魔法である「複利」の力を借りて、あなたの将来の資産がどのように変化するかを対比します。
+                    </p>
+
+                    <div class="investment-calc-grid">
+                        <div class="calc-inputs glass-mini">
+                            <h3><i class="fa-solid fa-sliders"></i> 積立シミュレーション設定</h3>
+                            
+                            <div class="input-group">
+                                <label for="input-monthly-pachi">パチンコに使う月平均額 (円)</label>
+                                <input type="number" id="input-monthly-pachi" value="50000" min="5000" step="5000" class="input-dark">
+                                <small>※パチンコで毎月失う（使う）と仮定する金額です。</small>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="input-years">積立期間 (年)</label>
+                                <input type="number" id="input-years" value="20" min="1" max="40" class="input-dark">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="input-interest">期待年間利回り (%)</label>
+                                <input type="number" id="input-interest" value="6" min="1" max="15" step="0.5" class="input-dark">
+                                <small>※全世界株式やS&P500インデックスの長期平均は約5%〜8%です。</small>
+                            </div>
+                            
+                            <button class="btn-pachi primary w-full" id="btn-calc-invest">
+                                <i class="fa-solid fa-arrows-spin"></i> 未来をシミュレートする
+                            </button>
+                        </div>
+
+                        <!-- シミュレーション結果 -->
+                        <div class="calc-results glass-mini">
+                            <h3><i class="fa-solid fa-road-sprout"></i> 20年後の驚愕の対比結果</h3>
+                            
+                            <div class="comparison-cards">
+                                <!-- パチンコを続けた未来 -->
+                                <div class="comp-card border-red">
+                                    <div class="comp-badge bg-dark-red">パチンコを続けた末路</div>
+                                    <h4 id="future-pachi-title">20年間のパチンコ損失額</h4>
+                                    <div class="comp-value text-red" id="future-pachi-lost">-12,000,000円</div>
+                                    <p class="comp-desc">
+                                        ただ液晶の激アツ演出を見つめ、時間と精神をすり減らし、数学的敗北の確率の収束によって確実に失うお金。
+                                    </p>
+                                </div>
+                                
+                                <!-- 積立投資に変えた未来 -->
+                                <div class="comp-card border-green">
+                                    <div class="comp-badge bg-dark-green">積立投資（複利）に変えた未来</div>
+                                    <h4 id="future-invest-title">20年後の積立運用資産</h4>
+                                    <div class="comp-value text-green" id="future-invest-gain">23,102,000円</div>
+                                    <p class="comp-desc">
+                                        世界経済の成長の果実を「複利効果」で増幅させ、老後の不安を完全に払拭する強固な個人資産。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="comparison-summary">
+                                <p class="text-highlight">
+                                    あなたがパチンコをやめて投資に回すだけで、実質的な経済的格差は <span id="future-diff-value" class="text-large text-green">35,102,000</span> 円に上ります！
+                                </p>
+                                <p class="mt-2 text-muted">
+                                    失うのはお金だけではありません。何千時間という「時間」、家族や友人と過ごす「信用」、健全な「脳の構造」。
+                                    パチンコをやめることは、最も利回りの高い最高の自己投資です。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 大当り演出モーダル -->
+    <div id="jackpot-modal" class="modal hidden">
+        <div class="modal-content glass border-red animate-scale">
+            <div class="modal-header">
+                <i class="fa-solid fa-triangle-exclamation text-red alert-pulse"></i>
+                <h2 id="modal-jp-title">大当り発生！</h2>
+            </div>
+            <div class="modal-body">
+                <div class="jackpot-animation-area">
+                    <div id="modal-jp-name" class="jp-name text-red">10R 図柄揃い</div>
+                    <div id="modal-jp-detail" class="jp-detail">出玉：1500発獲得</div>
+                    <div id="modal-rush-status" class="rush-status">ST突入チャレンジ...</div>
                 </div>
                 
-                <div class="controls">
-                    <button id="btn-left" class="action-btn">👈 左へ案内<br><small>(給油口: 左)</small></button>
-                    <button id="btn-right" class="action-btn">右へ案内 👉<br><small>(給油口: 右)</small></button>
+                <div class="modal-stats-grid">
+                    <div class="m-stat">
+                        <span>今回の投資</span>
+                        <strong id="modal-curr-invest">0円</strong>
+                    </div>
+                    <div class="m-stat">
+                        <span>今回の回転数</span>
+                        <strong id="modal-curr-rot">0回</strong>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Result Screen -->
-        <div id="result-screen" class="screen">
-            <h2>業務終了！</h2>
-            <div class="result-layout">
-                <div class="result-main">
-                    <div class="result-details">
-                        <p>最終売上: <span id="final-score" class="highlight"></span> 円</p>
-                        <p>あなたの称号: <span id="title" class="highlight"></span></p>
-                    </div>
-                    
-                    <div class="difficulty-buttons">
-                        <button id="retry-btn">もう一度プレイ</button>
-                    </div>
-                </div>
-                
-                <div class="ranking-container">
-                    <h3>🏆 売上ランキング トップ5</h3>
-                    <ol id="ranking-list" class="ranking-list">
-                        <!-- ランキングがここに入る -->
-                    </ol>
-                </div>
+            <div class="modal-footer">
+                <button class="btn-pachi danger" id="btn-close-modal">結果を確定する</button>
             </div>
         </div>
     </div>
 
-    <script src="cars.js"></script>
-    <script src="app.js"></script>
+    <script src="cars.js?v=1.1"></script>
+    <script src="app.js?v=1.1"></script>
 </body>
 </html>
