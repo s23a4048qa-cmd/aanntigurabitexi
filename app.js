@@ -928,6 +928,13 @@
         initSelfCheck();
         updateRealtimeUI();
         
+        // ボタンのコスト表示を border1K の設定から正確に計算して反映する
+        // 1K(1000円) = border1K 回転 なので、1回転のコスト = 1000 / border1K 円
+        const costPerSpinDisplay = Math.round(1000 / eGhoulSpecs.costs.border1K);
+        const cost10SpinDisplay  = Math.round(10000 / eGhoulSpecs.costs.border1K);
+        document.getElementById("cost-1spin").textContent  = costPerSpinDisplay.toLocaleString();
+        document.getElementById("cost-10spin").textContent = cost10SpinDisplay.toLocaleString();
+
         // 積立計算の初期実行
         btnCalcInvest.click();
     });
